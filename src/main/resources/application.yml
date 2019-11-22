@@ -1,0 +1,47 @@
+spring:
+  main:
+    banner-mode: "off"
+  application:
+    name: mongo-stream-spark-job
+baseFilePath: /tmp/mongo-stream-spark-job
+job:
+  kafka-bootstrap-servers: kafka:9092
+  kafka-subscribe-type: subscribe
+  #kafka-topics: demosparkjson
+  mschema: mongo.conservazione
+  document-source:
+    kafka-topics: mongodb.techitalia.documents   #${job.mschema}.pdas,${job.mschema}.docs,${job.mschema}.fepas,${job.mschema}.lotinvoices,${job.mschema}.pdvs
+    fs-save-type: parquet
+    fs-save-path: ${baseFilePath}/mongo_documents.parquet
+    #fs-save-type: parquet
+    checkpoint-location: /tmp/checkpoint-spark-documents
+    #fs-save-path: ${baseFilePath}/mongo_documents.parquet
+  event-source:
+    kafka-topics: ${job.mschema}.errorlogs
+    fs-save-type: parquet
+    fs-save-path: ${baseFilePath}/mongo_events.parquet
+    #fs-save-type: parquet
+    checkpoint-location: /tmp/checkpoint-spark-events
+spark:
+  appname: kafkaDocsToHdfs
+  masterUri: local
+  homeDir:
+  streaming:
+    batchDuration: 10000
+    kafka:
+      params:
+          bootstrap-servers: kafka:9092
+          key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+          value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+          auto.offset.reset: latest
+          enable.auto.commit: false
+logging:
+  level:
+    root: INFO
+    org.hibernate: ERROR
+    org.hibernate.SQL: ERROR
+    org.hibernate.type: ERROR
+    org.hibernate.tool.hbm2ddl: ERROR
+    org.apache.spark: WARN
+    org.apache.kafka: WARN
+    org.springframework.data.mongodb.core.ReactiveMongoTemplate: ERROR
