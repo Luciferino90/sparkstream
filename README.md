@@ -16,9 +16,9 @@ cp /Users/luca/workbench/techitalia/Java/sparkstream/mongo-stream-spark-job-mast
 rm examples/jars/mongo.jar 
 mv examples/jars/mongo-spark-streaming-0.0.1.jar examples/jars/mongo.jar
 
-docker build -t tech-spark:latest -f kubernetes/dockerfiles/spark/Dockerfile .
-docker tag tech-spark localhost:5000/tech-spark:latest
-docker push localhost:5000/tech-spark:latest
+docker build -t docfly-spark3:latest -f kubernetes/dockerfiles/spark/Dockerfile .
+docker tag docfly-spark3 localhost:5000/docfly-spark3:latest
+docker push localhost:5000/docfly-spark3:latest
 
 // working
 bin/spark-submit \

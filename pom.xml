@@ -6,23 +6,26 @@
 
     <groupId>it.arubapec.esecurity</groupId>
     <artifactId>mongo-spark-streaming</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1_11_3.0.0-preview</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.8.RELEASE</version>
+        <version>2.2.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>8</java.version>
+        <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <scala.version>2.11</scala.version>
+        <scala.version>2.12</scala.version>
         <janino.version>3.0.8</janino.version>
+        <spark>3.0.0-preview</spark>
+        <lombok.version>1.18.10</lombok.version>
+        <bson.version>3.10.2</bson.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -43,12 +46,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>2.1.8.RELEASE</version>
             <exclusions>
-                <!--exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-classic</artifactId>
-                </exclusion-->
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-logging</artifactId>
@@ -62,27 +60,27 @@
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_${scala.version}</artifactId>
-            <version>2.4.4</version>
+            <version>${spark}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-streaming_${scala.version}</artifactId>
-            <version>2.4.4</version>
+            <version>${spark}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-streaming-kafka-0-10_${scala.version}</artifactId>
-            <version>2.4.4</version>
+            <version>${spark}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-sql_${scala.version}</artifactId>
-            <version>2.4.4</version>
+            <version>${spark}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-sql-kafka-0-10_${scala.version}</artifactId>
-            <version>2.4.4</version>
+            <version>${spark}</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -93,19 +91,9 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.10</version>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
-        <!--dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.logging</groupId>
-                    <artifactId>jboss-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency-->
         <dependency>
             <groupId>org.codehaus.janino</groupId>
             <artifactId>commons-compiler</artifactId>
@@ -128,41 +116,13 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>bson</artifactId>
-            <version>3.10.2</version>
+            <version>${bson.version}</version>
         </dependency>
     </dependencies>
 
 
     <build>
         <plugins>
-            <!--plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <finalName>${project.artifactId}-slim</finalName>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>only-library</id>
-                        <phase>package</phase>
-                        <configuration>
-                            <classifier>only-library</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin-->
-            <!--plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <finalName>${project.artifactId}-slim</finalName>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-            </plugin-->
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
@@ -247,81 +207,4 @@
             </plugin>
         </plugins>
     </build>
-
-
-    <!--build>
-        <finalName>mongo2</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <version>2.1.8.RELEASE</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <keepDependenciesWithProvidedScope>false</keepDependenciesWithProvidedScope>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/*.SF</exclude>
-                                <exclude>META-INF/*.DSA</exclude>
-                                <exclude>META-INF/*.RSA</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
-                    <transformers>
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                            <resource>META-INF/spring.handlers</resource>
-                        </transformer>
-                        <transformer
-                                implementation="org.springframework.boot.maven.PropertiesMergingResourceTransformer">
-                            <resource>META-INF/spring.factories</resource>
-                        </transformer>
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                            <resource>META-INF/spring.schemas</resource>
-                        </transformer>
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>it.arubapec.esecurity.mongostreamspark.SpringKafkaApplication</mainClass>
-                        </transformer>
-                    </transformers>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>1.4.10</version>
-                <configuration>
-                    <repository>localhost:5000/${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
-                    <useMavenSettingsForAuth>false</useMavenSettingsForAuth>
-                    <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                        <JAR_VERSION>${project.version}</JAR_VERSION>
-                        <START_CLASS>it.arubapec.esecurity.mongostreamspark.SpringKafkaApplication</START_CLASS>
-                    </buildArgs>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build-->
-
-
 </project>
