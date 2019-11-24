@@ -1,4 +1,4 @@
-FROM localhost:5000/docfly-spark:latest as build
+FROM localhost:5000/spark-home:latest as build
 WORKDIR /workspace/app
 
 ARG JAR_FILE
@@ -6,7 +6,7 @@ COPY target/${JAR_FILE} ./target/app.jar
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 
-FROM localhost:5000/docfly-spark:latest
+FROM localhost:5000/spark-home:latest
 VOLUME /tmp
 EXPOSE 4040 7077 8080
 ENV SPRING_PROFILES_ACTIVE=docker
@@ -19,8 +19,8 @@ ENV SPRING_JMX_ENABLED=false
 # RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN apk update
-RUN apk add procps
-RUN apk add less
+RUN apk add procps -y
+RUN apk add less -y
 #RUN apk add inetutils-telnet ???
 #RUN apk add iputils
 #RUN apk add bind-tools
