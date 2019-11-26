@@ -30,7 +30,7 @@ spark:
     batchDuration: 10000
     kafka:
       params:
-          bootstrap-servers: kafka:9092
+          bootstrap-servers: kafka.techitalia:9092
           key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
           value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
           auto.offset.reset: latest

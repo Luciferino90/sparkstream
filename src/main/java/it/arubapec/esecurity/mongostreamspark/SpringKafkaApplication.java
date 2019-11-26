@@ -19,7 +19,7 @@ package it.arubapec.esecurity.mongostreamspark;
 
 import it.arubapec.esecurity.mongostreamspark.config.JobProperties;
 import it.arubapec.esecurity.mongostreamspark.config.SparkProperties;
-import it.arubapec.esecurity.mongostreamspark.service.KafkaToHDFS;
+import it.arubapec.esecurity.mongostreamspark.service.KafkaToMongoDB;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
@@ -31,13 +31,14 @@ import org.springframework.boot.context.properties.*;
 })
 public  class SpringKafkaApplication implements CommandLineRunner {
 
-  @Autowired KafkaToHDFS kafkaToHDFS;
+  @Autowired
+  KafkaToMongoDB kafkaToMongoDB;
   public static void main(String[] args) throws Exception {
     SpringApplication.run(SpringKafkaApplication.class, args);
   }
 
   @Override
   public void run(String... args) throws Exception {
-    kafkaToHDFS.doWork();
+    kafkaToMongoDB.doWork();
   }
 }

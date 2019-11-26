@@ -27,6 +27,8 @@ public class Schemas {
 			.add("uploaddate", DATE_SCHEMA,true)
 			;
 
+	public static final StructType EXAMPLE = new StructType()
+			.add("field", DataTypes.StringType);
 
 	public static final StructType EVENT_SCHEMA = new StructType()
 			.add("code", DataTypes.IntegerType)
@@ -36,12 +38,10 @@ public class Schemas {
 
 	public static final StructType KAFKA_DOCUMENT_SCHEMA = new StructType()
 			.add("ns",NS_SCHEMA)
-			.add("fullDocument",DOCUMENT_SCHEMA);
+			.add("fullDocument",EXAMPLE);
 	public static final StructType KAFKA_EVENT_SCHEMA = new StructType()
 			.add("ns",NS_SCHEMA)
 			.add("fullDocument",EVENT_SCHEMA);
-	public static final StructType EXAMPLE = new StructType()
-			.add("field", DataTypes.StringType);
 
 
 }
