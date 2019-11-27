@@ -42,8 +42,14 @@ public class KafkaToMongoDB implements Serializable {
 		// Generate running word count
 		Dataset<Row> streamingMessages = getStructLines(lines, schema);
 
-		return streamingMessages.writeStream().format("console");
+		//return streamingMessages.writeStream().format("console");
+        return streamingMessages.writeStream()
+                .option("checkpointLocation", config.getCheckpointLocation() )
+                //.trigger(Trigger.ProcessingTime("10 seconds"))
+                .format(config.getFsSaveType())        // can be "orc", "json", "csv", etc.
+                .option("path", config.getFsSavePath());
 	}
+
 	public Seq<Column> seq(Column... cols)
 	{
 		return scala.collection.JavaConverters.collectionAsScalaIterableConverter(Arrays.asList(cols)).asScala().toBuffer();

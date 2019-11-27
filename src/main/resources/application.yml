@@ -3,7 +3,7 @@ spring:
     banner-mode: "off"
   application:
     name: mongo-stream-spark-job
-baseFilePath: /tmp/mongo-stream-spark-job
+baseFilePath: /Users/luca/.kubernetes/shared/parquet
 job:
   kafka-bootstrap-servers: kafka.techitalia:9092
   kafka-subscribe-type: subscribe

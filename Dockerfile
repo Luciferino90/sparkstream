@@ -85,7 +85,9 @@ RUN mkdir -p /opt/spark/checkpoint-dir
 ARG JAR_VERSION
 RUN echo ${JAR_VERSION} > /app/version.txt
 
-RUN chown -R serviceapp:serviceapp /app/ /opt/
+RUN mkdir -p /Users/luca/.kubernetes
+
+RUN chown -R serviceapp:serviceapp /app/ /opt/ /Users/luca/.kubernetes/
 
 # https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
 USER 1000:1000
