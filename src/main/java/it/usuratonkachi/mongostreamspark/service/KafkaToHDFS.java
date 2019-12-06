@@ -6,6 +6,7 @@ import it.usuratonkachi.mongostreamspark.config.Schemas;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.streaming.*;
+import org.apache.spark.sql.types.DataType;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructType;
 import org.springframework.beans.factory.annotation.*;
@@ -61,12 +62,13 @@ public class KafkaToHDFS implements Serializable {
 		return scala.collection.JavaConverters.collectionAsScalaIterableConverter(Arrays.asList(cols)).asScala().toBuffer();
 	}
 
-	private Dataset<Row> getStructLines(Dataset<String> lines, StructType schema, Column dateColumn) {
+		private Dataset<Row> getStructLines(Dataset<String> lines, StructType schema, Column dateColumn) {
 		String tmpDateField="objectDate";
 		return lines
 				.select(from_json(col("value"), schema).as("payload"))
 				.select(col("payload.fullDocument.*"),col("payload.ns.coll").as("collectionName"))
 				.select(col("*"),
+						column("size.$numberLong").cast(DataTypes.LongType).as("dimension"),
 						dateColumn
 								.$div(1000).cast(DataTypes.TimestampType)
 								.as(tmpDateField))
@@ -79,6 +81,7 @@ public class KafkaToHDFS implements Serializable {
 						col("*")
 				)
 				.where(col(tmpDateField).isNotNull())
+				.drop("size",tmpDateField)
 				;
 	}
 
