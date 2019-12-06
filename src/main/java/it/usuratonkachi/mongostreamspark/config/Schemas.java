@@ -8,8 +8,6 @@ public class Schemas {
 	public static final StructType DATE_SCHEMA = new StructType()
 			.add("$date", DataTypes.LongType);
 
-	public static final StructType NUMBER_LONG_SCHEMA = new StructType()
-			.add("$numberLong", DataTypes.StringType);
 	public static final StructType NS_SCHEMA = new StructType()
 			.add("db", DataTypes.StringType)
 			.add("coll", DataTypes.StringType);
@@ -19,7 +17,7 @@ public class Schemas {
 			.add("doctypename", DataTypes.StringType)
 			.add("username", DataTypes.StringType)
 			.add("status", DataTypes.IntegerType)
-			.add("size", NUMBER_LONG_SCHEMA,true)
+			.add("size", DataTypes.LongType, true)
 			.add("mimetype", DataTypes.StringType)
 			.add("filename", DataTypes.StringType)
 			.add("createddate", DATE_SCHEMA,true)
