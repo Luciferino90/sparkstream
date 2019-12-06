@@ -1,4 +1,4 @@
-FROM localhost:5000/spark-home:latest as build
+FROM luciferino/spark:2.4.4 as build
 WORKDIR /workspace/app
 
 ARG JAR_FILE
@@ -6,7 +6,7 @@ COPY target/${JAR_FILE} ./target/app.jar
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 
-FROM localhost:5000/spark-home:latest
+FROM luciferino/spark:2.4.4
 VOLUME /tmp
 EXPOSE 4040 7077 8080
 ENV SPRING_PROFILES_ACTIVE=docker
@@ -85,12 +85,12 @@ RUN mkdir -p /opt/spark/checkpoint-dir
 ARG JAR_VERSION
 RUN echo ${JAR_VERSION} > /app/version.txt
 
-RUN mkdir -p /Users/luca/.kubernetes
-
-RUN chown -R serviceapp:serviceapp /app/ /opt/ /Users/luca/.kubernetes/
+# RUN mkdir -p /Users/luca/.kubernetes/shared/parquet/mongo_documents.parquet
+# RUN chown -R 1000:1000 /app/ /opt/ /Users
+# RUN chmod -R 777 /Users
 
 # https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
-USER 1000:1000
+# USER 1000:1000
 
 ARG START_CLASS
 ENV STARTCLASSNAME=${START_CLASS}

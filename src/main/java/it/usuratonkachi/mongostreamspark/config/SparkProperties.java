@@ -1,4 +1,4 @@
-package it.arubapec.esecurity.mongostreamspark.config;
+package it.usuratonkachi.mongostreamspark.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -12,6 +12,7 @@ public class SparkProperties {
 	private String masterUri;
 
 	private String homeDir;
+
 
 	private String hdfsSaveType;
 

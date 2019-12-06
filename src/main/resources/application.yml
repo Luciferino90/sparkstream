@@ -3,25 +3,21 @@ spring:
     banner-mode: "off"
   application:
     name: mongo-stream-spark-job
-baseFilePath: /Users/luca/.kubernetes/shared/parquet
+baseFilePath: /zeppelin/k8s-custom
 job:
   kafka-bootstrap-servers: kafka.techitalia:9092
   kafka-subscribe-type: subscribe
-  #kafka-topics: demosparkjson
-  mschema: mongo.conservazione
-  document-source:
-    kafka-topics: mongo.techitalia.documents   #${job.mschema}.pdas,${job.mschema}.docs,${job.mschema}.fepas,${job.mschema}.lotinvoices,${job.mschema}.pdvs
+  mschema: mongo.techitalia
+  documents-source:
+    kafka-topics: ${job.mschema}.documents
     fs-save-type: parquet
     fs-save-path: ${baseFilePath}/mongo_documents.parquet
-    #fs-save-type: parquet
     checkpoint-location: /tmp/checkpoint-spark-documents
-    #fs-save-path: ${baseFilePath}/mongo_documents.parquet
-  event-source:
-    kafka-topics: ${job.mschema}.errorlogs
+  internal-documents-source:
+    kafka-topics: ${job.mschema}.internaldocuments
     fs-save-type: parquet
-    fs-save-path: ${baseFilePath}/mongo_events.parquet
-    #fs-save-type: parquet
-    checkpoint-location: /tmp/checkpoint-spark-events
+    fs-save-path: ${baseFilePath}/mongo_internaldocuments.parquet
+    checkpoint-location: /tmp/checkpoint-spark-internaldocuments
 spark:
   appname: kafkaDocsToHdfs
   masterUri: local
@@ -30,11 +26,11 @@ spark:
     batchDuration: 10000
     kafka:
       params:
-          bootstrap-servers: kafka.techitalia:9092
-          key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-          value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
-          auto.offset.reset: latest
-          enable.auto.commit: false
+        bootstrap-servers: kafka-techitalia:9092
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        auto.offset.reset: latest
+        enable.auto.commit: false
 logging:
   level:
     root: INFO

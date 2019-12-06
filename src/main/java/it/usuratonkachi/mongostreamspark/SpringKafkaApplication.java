@@ -15,30 +15,31 @@
  * limitations under the License.
  */
 
-package it.arubapec.esecurity.mongostreamspark;
+package it.usuratonkachi.mongostreamspark;
 
-import it.arubapec.esecurity.mongostreamspark.config.JobProperties;
-import it.arubapec.esecurity.mongostreamspark.config.SparkProperties;
-import it.arubapec.esecurity.mongostreamspark.service.KafkaToMongoDB;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.*;
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.boot.context.properties.*;
+import it.usuratonkachi.mongostreamspark.config.JobProperties;
+import it.usuratonkachi.mongostreamspark.config.SparkProperties;
+import it.usuratonkachi.mongostreamspark.service.KafkaToHDFS;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-@SpringBootApplication(scanBasePackages = {"it.arubapec.esecurity.mongostreamspark",})
-@EnableConfigurationProperties({
-        JobProperties.class, SparkProperties.class
-})
+@SpringBootApplication(scanBasePackages = "it.usuratonkachi.mongostreamspark")
+@EnableConfigurationProperties({JobProperties.class, SparkProperties.class})
 public  class SpringKafkaApplication implements CommandLineRunner {
 
   @Autowired
-  KafkaToMongoDB kafkaToMongoDB;
-  public static void main(String[] args) throws Exception {
+  private KafkaToHDFS kafkaToHDFS;
+
+  public static void main(String[] args) {
     SpringApplication.run(SpringKafkaApplication.class, args);
   }
 
   @Override
   public void run(String... args) throws Exception {
-    kafkaToMongoDB.doWork();
+    kafkaToHDFS.doWork();
   }
+
 }

@@ -1,4 +1,4 @@
-package it.arubapec.esecurity.mongostreamspark.config;
+package it.usuratonkachi.mongostreamspark.config;
 
 import lombok.Data;
 
